@@ -77,11 +77,9 @@ jobs:
       - name: Prepare release files
         run: |
           cd artifacts
-          for dir in */; do
-            file=$(ls "$dir")
-            mv "$dir/$file" .
-            rmdir "$dir"
-          done
+          find . -type f -name "ghk*" -exec mv {} . \;
+          find . -type d -empty -delete
+          ls -la
           sha256sum ghk-* > checksums.txt
 
       - name: Create Release
