@@ -15,21 +15,18 @@ jobs:
     strategy:
       matrix:
         include:
-          # Linux
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             name: ghk-linux-x86_64
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             name: ghk-linux-aarch64
-          # macOS
           - os: macos-latest
             target: x86_64-apple-darwin
             name: ghk-macos-x86_64
           - os: macos-latest
             target: aarch64-apple-darwin
             name: ghk-macos-aarch64
-          # Windows
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             name: ghk-windows-x86_64.exe
@@ -38,7 +35,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Rust
-        uses: dtolnay/rust-action@stable
+        uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
 
@@ -47,6 +44,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu
+          echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
 
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
@@ -76,12 +74,13 @@ jobs:
         with:
           path: artifacts
 
-      - name: Create checksums
+      - name: Prepare release files
         run: |
           cd artifacts
           for dir in */; do
             file=$(ls "$dir")
             mv "$dir/$file" .
+            rmdir "$dir"
           done
           sha256sum ghk-* > checksums.txt
 
@@ -93,7 +92,6 @@ jobs:
             artifacts/checksums.txt
           generate_release_notes: true
 
-  # Build .deb package for Debian/Ubuntu
   deb:
     needs: build
     runs-on: ubuntu-latest
@@ -131,7 +129,6 @@ jobs:
         with:
           files: ghk_*.deb
 
-  # Build .rpm package for Fedora/RHEL
   rpm:
     needs: build
     runs-on: ubuntu-latest
@@ -153,9 +150,9 @@ jobs:
           cp ghk-linux-x86_64 ~/rpmbuild/SOURCES/ghk
           
           VERSION=${GITHUB_REF#refs/tags/v}
-          cat > ~/rpmbuild/SPECS/ghk.spec << EOF
+          cat > ~/rpmbuild/SPECS/ghk.spec << 'EOF'
           Name: ghk
-          Version: ${VERSION}
+          Version: %{version}
           Release: 1
           Summary: Simple GitHub helper
           License: MIT
@@ -172,6 +169,7 @@ jobs:
           /usr/bin/ghk
           EOF
           
+          sed -i "s/%{version}/${VERSION}/" ~/rpmbuild/SPECS/ghk.spec
           rpmbuild -bb ~/rpmbuild/SPECS/ghk.spec
           cp ~/rpmbuild/RPMS/x86_64/*.rpm .
 
