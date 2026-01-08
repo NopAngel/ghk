@@ -30,9 +30,54 @@ pub fn run() -> Result<()> {
         return Ok(());
     }
 
+    // Safety check for scary files (sensitive or large temp files)
+    let files = git::changedfiles()?;
+    let scarypatterns = [
+        ".env", "node_modules", "target", "dist", "venv", ".venv", "env",
+        "vendor", ".DS_Store", "thumbs.db", "__pycache__", "desktop.ini",
+        ".vscode", ".idea", "build", "out", "bin", "obj", "pyc", "pyo",
+        "log", "tmp", "bak", "swp", "exe", "dll", "so", "dylib"
+    ];
+
+    let mut foundscary = Vec::new();
+    for file in &files {
+        let filelow = file.to_lowercase();
+        for pattern in &scarypatterns {
+            if filelow.contains(pattern) {
+                foundscary.push(file.clone());
+                break;
+            }
+        }
+    }
+
+    if !foundscary.is_empty() {
+        util::warn("Wait! Potential sensitive or temporary files detected:");
+        for file in foundscary.iter().take(5) {
+            util::dim(&format!("  {}", file));
+        }
+        if foundscary.len() > 5 {
+            util::dim(&format!("  ... and {} more", foundscary.len() - 5));
+        }
+        
+        if !std::path::Path::new(".gitignore").exists() {
+            util::info("Tip: You don't have a .gitignore file.");
+            util::dim("Run 'ghk ignore' to add a template for your project.");
+        }
+
+        let proceed = dialoguer::Confirm::new()
+            .with_prompt("Are you sure you want to save these files?")
+            .default(false)
+            .interact()?;
+        
+        if !proceed {
+            util::info("Cancelled. Clean up your files or add them to .gitignore.");
+            return Ok(());
+        }
+        println!(); 
+    }
+
     // Show what will be saved
     util::info("Changes to save:");
-    let files = git::changedfiles()?;
     for file in files.iter().take(10) {
         util::dim(&format!("  {}", file));
     }
