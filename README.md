@@ -49,26 +49,26 @@ ghk push       # Save changes
 
 ## Commands
 
-| Command | Alias | Purpose |
-|---------|-------|---------|
-| `setup` | | Install requirements |
-| `init` | | Start tracking folder |
-| `login` / `logout` | | GitHub auth |
-| `create` | | Create repo on GitHub |
-| `push` | `save` | Save changes |
-| `pull` | `sync` | Download changes |
-| `clone <repo>` | `download` | Download repo |
-| `status` | | Show status |
-| `diff` | | Preview changes |
-| `history` | `log` | Show recent saves |
-| `undo` | | Undo last commit |
-| `open` | | Open in browser |
-| `branch` | | List/switch branches |
-| `ignore` | | Add .gitignore |
-| `license` | | Add license file |
-| `config` | | View/edit settings |
-| `user list/switch` | | Manage accounts |
-| `completions` | | Shell completions |
+| Command | Alias | Purpose | Runs... |
+|---------|-------|---------|---------|
+| `setup` | | Install requirements | (Checks requirements) |
+| `init` | | Start tracking folder | `git init` |
+| `login` / `logout` | | GitHub auth | `gh auth login` |
+| `create` | | Create repo on GitHub | `gh repo create` |
+| `push` | `save` | Save changes | `git add -A && git commit && git push` |
+| `pull` | `sync` | Download changes | `git pull` |
+| `clone <repo>` | `download` | Download repo | `gh repo clone` |
+| `status` | | Show status | `git status` |
+| `diff` | | Preview changes | `git diff` |
+| `history` | `log` | Show recent saves | `git log` |
+| `undo` | | Undo last commit | `git reset --soft HEAD~1` |
+| `open` | | Open in browser | `gh browse` |
+| `branch` | | List/switch branches | `git branch` |
+| `ignore` | | Add .gitignore | (Writes .gitignore) |
+| `license` | | Add license file | (Writes LICENSE) |
+| `config` | | View/edit settings | (Edits config) |
+| `user list/switch` | | Manage accounts | (Internal auth) |
+| `completions` | | Shell completions | (Generates script) |
 
 ## Options
 

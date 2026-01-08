@@ -237,36 +237,43 @@ ghk push</code>
                 <th>Command</th>
                 <th>Alias</th>
                 <th>Description</th>
+                <th>Runs...</th>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk setup</code></td>
                 <td></td>
                 <td>Check and install git, GitHub CLI. Shows versions and connection status.</td>
+                <td><code class="inline-code">(Checks requirements)</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk init</code></td>
                 <td></td>
                 <td>Start tracking this folder. Creates .git folder.</td>
+                <td><code class="inline-code">git init</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk create</code></td>
                 <td></td>
                 <td>Create a new repository on GitHub. Prompts for name and visibility.</td>
+                <td><code class="inline-code">gh repo create</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk push</code></td>
                 <td><span class="alias">save</span></td>
                 <td>Save changes to GitHub. Prompts for a message describing your changes.</td>
+                <td><code class="inline-code">git add -A && ...</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk pull</code></td>
                 <td><span class="alias">sync</span></td>
                 <td>Download changes from GitHub to your computer.</td>
+                <td><code class="inline-code">git pull</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk clone &lt;repo&gt;</code></td>
                 <td><span class="alias">download</span></td>
                 <td>Download a repository. Use owner/repo or full URL.</td>
+                <td><code class="inline-code">gh repo clone</code></td>
             </tr>
         </table>
 
@@ -281,21 +288,25 @@ ghk push</code>
                 <td><code class="inline-code">ghk status</code></td>
                 <td></td>
                 <td>Show current status: branch, remote, unsaved changes, login status.</td>
+                <td><code class="inline-code">git status</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk diff</code></td>
                 <td></td>
                 <td>Preview changes before saving. Shows what files changed.</td>
+                <td><code class="inline-code">git diff</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk history [n]</code></td>
                 <td><span class="alias">log</span></td>
                 <td>Show recent saves. Default: 10 commits.</td>
+                <td><code class="inline-code">git log</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk open</code></td>
                 <td></td>
                 <td>Open repository in your web browser.</td>
+                <td><code class="inline-code">gh browse</code></td>
             </tr>
         </table>
 
@@ -310,16 +321,19 @@ ghk push</code>
                 <td><code class="inline-code">ghk undo</code></td>
                 <td></td>
                 <td>Undo last commit. Your changes are kept, just uncommitted.</td>
+                <td><code class="inline-code">git reset --soft...</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk branch</code></td>
                 <td></td>
                 <td>List all branches. Shows current branch.</td>
+                <td><code class="inline-code">git branch</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk branch &lt;name&gt;</code></td>
                 <td></td>
                 <td>Switch to branch. Creates it if doesn't exist.</td>
+                <td><code class="inline-code">git branch & switch</code></td>
             </tr>
         </table>
 
@@ -335,11 +349,13 @@ ghk push</code>
                 <td></td>
                 <td>Add .gitignore template. Choose from: node, python, rust, go, java, web, macos, windows, linux, ide.
                 </td>
+                <td><code class="inline-code">(Writes .gitignore)</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk license</code></td>
                 <td></td>
                 <td>Add LICENSE file. Choose from: MIT, Apache, GPL, Unlicense.</td>
+                <td><code class="inline-code">(Writes LICENSE)</code></td>
             </tr>
         </table>
 
@@ -354,31 +370,37 @@ ghk push</code>
                 <td><code class="inline-code">ghk login</code></td>
                 <td></td>
                 <td>Connect to GitHub. Opens browser for authentication.</td>
+                <td><code class="inline-code">gh auth login</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk logout</code></td>
                 <td></td>
                 <td>Disconnect from GitHub.</td>
+                <td><code class="inline-code">gh auth logout</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk user list</code></td>
                 <td></td>
                 <td>Show logged in accounts.</td>
+                <td><code class="inline-code">(Internal auth)</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk user switch &lt;name&gt;</code></td>
                 <td></td>
                 <td>Switch to different GitHub account.</td>
+                <td><code class="inline-code">(Internal auth)</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk config</code></td>
                 <td></td>
                 <td>View all settings.</td>
+                <td><code class="inline-code">(Reads config)</code></td>
             </tr>
             <tr>
                 <td><code class="inline-code">ghk config &lt;key&gt; &lt;value&gt;</code></td>
                 <td></td>
                 <td>Change a setting. Keys: quiet, nocolor, editor.</td>
+                <td><code class="inline-code">(Edits config)</code></td>
             </tr>
         </table>
 
